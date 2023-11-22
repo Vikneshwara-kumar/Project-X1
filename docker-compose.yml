@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  influxdb:
+    image: arm32v7/influxdb:2.0.10
+    container_name: influxdb
+    restart: always
+    environment:
+      - INFLUXDB_DB=mydb
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=adminpassword
+      - INFLUXDB_USER=myuser
+      - INFLUXDB_USER_PASSWORD=mypassword
+    volumes:
+      - /path/on/host/influxdb:/var/lib/influxdb
+    platforms:
+      - linux/arm/v7
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=adminpassword
+    volumes:
+      - /path/on/host/grafana:/var/lib/grafana
+    depends_on:
+      - influxdb
+    platforms:
+      - linux/arm/v7
